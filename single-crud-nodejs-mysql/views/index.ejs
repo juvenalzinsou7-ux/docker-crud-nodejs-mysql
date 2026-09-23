@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+  <div class="toolbar">
+    <h2>Liste des produits</h2>
+    <a class="btn btn-primary" href="/products/new">+ Ajouter un produit</a>
+  </div>
+
+  <% if (products.length === 0) { %>
+    <p class="empty">Aucun produit pour le moment. Cliquez sur « Ajouter un produit ».</p>
+  <% } else { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Prix (FCFA)</th>
+          <th>Quantité</th>
+          <th class="actions-col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(function (product) { %>
+          <tr>
+            <td><%= product.id %></td>
+            <td><%= product.name %></td>
+            <td><%= Number(product.price).toLocaleString('fr-FR') %></td>
+            <td><%= product.quantity %></td>
+            <td class="actions">
+              <a class="btn btn-small" href="/products/<%= product.id %>/edit">Modifier</a>
+              <form action="/products/<%= product.id %>/delete" method="POST" onsubmit="return confirm('Supprimer ce produit ?');">
+                <button type="submit" class="btn btn-small btn-danger">Supprimer</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+
+<%- include('partials/footer') %>

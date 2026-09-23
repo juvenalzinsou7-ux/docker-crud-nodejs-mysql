@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - l2si
+
+  crud-app:
+    build: .
+    image: crud-app:1.0
+    container_name: crud-app
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: admin123
+      DB_NAME: inventory
+      PORT: 3000
+    depends_on:
+      - db
+    networks:
+      - l2si
+
+networks:
+  l2si:
+
+volumes:
+  db-data:
+    external: true
